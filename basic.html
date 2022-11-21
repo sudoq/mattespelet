@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="generator" content="HTML Tidy for HTML5 for Apple macOS version 5.8.0">
+  <meta charset="UTF-8">
+  <meta name="robots" content="noindex">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://unpkg.com/@picocss/pico@latest/css/pico.min.css">
+  <script src="js/utils_3.js"></script>
+  <title></title>
+</head>
+<body>
+  <main class="container">
+    <h1 id="template_header"></h1>
+    <h2 id="score"></h2>
+    <progress id="scoreProgress" value="1" max="1"></progress>
+    <form action="./index.html">
+      <input type="submit" value="Tillbaka">
+      <center>
+        <p id="p1">ph</p>
+      </center>
+    </form>
+    <form onsubmit="return handleResponseSubmit();">
+      <input type="tel" pattern="[0-9]*" id="resp" name="resp" novalidate="" autofocus=""> <input type="submit" id="submit-button" value="Svara">
+    </form>
+    <center>
+      <p id="p2"></p>
+    </center><button id="refresh-button" hidden="true" onclick="window.location.reload();">Ny fråga</button>
+  </main>
+  <script>
+    renderTemplateHeader();
+    pageControllerBasicProblemTemplate();
+  </script>
+</body>
+</html>

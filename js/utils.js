@@ -12,7 +12,7 @@ function pageControllerAdd(){
 
   v1 = randRange(min_num, max_num)
   v2 = randRange(min_num, max_num)
-  
+
   r = v1 + v2;
   return formatCalcString(v1, "+", v2)
 }
@@ -41,7 +41,7 @@ function pageControllerMul(){
   updatePerformance();
   v1 = randRange(0, 6)
   v2 = randRange(1, 10)
-  
+
   r = v1 * v2;
   return formatCalcString(v1, "x", v2)
 }
@@ -50,7 +50,7 @@ function pageControllerDiv(){
   updatePerformance();
   r = randRange(0, 5)
   v2 = randRange(1, 5)
- 
+
   t = r * v2;
   return formatCalcString(t, "/", v2)
 }
@@ -210,7 +210,7 @@ function updateTemplateHeader(header){
 
 function getScoreBoosterPrice(){
   level = getScoreBooster();
-  base = 10
+  base = 100
   return Math.floor(base * Math.pow(1.15, level));
 }
 

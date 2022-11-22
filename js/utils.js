@@ -3,6 +3,7 @@ function pageControllerBasicProblemTemplate(){
   templateId = getTemplateId();
   results = templateMapping[templateId]["controller"]();
   document.getElementById("p1").innerHTML = results;
+  reqTime = getTimeMs();
 }
 
 function pageControllerAdd(){
@@ -103,15 +104,23 @@ function getRandomInt(max) {
 }
 
 function handleResponseSubmit() {;
+    respTime = getTimeMs();
+    duration = respTime - reqTime;
     resp = document.getElementById("resp").value;
     correct = resp == r
     if(correct) {
       reward = getReward();
-      addScore(reward);
-      responseText = `✅ Rätt svar Elliot, bra jobbat! ${reward} ⭐ till dig!`
+      bonus = getTimeBonusReward(duration, reward);
+      total = reward + bonus
+      addScore(total);
+      bonus_text = ""
+      if (bonus) {
+        bonus_text = ` + ${bonus} (tidsbonus) = ${total}`
+      }
+      responseText = `✅ Rätt! Du har vunnit ${reward}${bonus_text} ⭐`
       document.getElementById('resp').ariaInvalid = false;
     } else {
-      responseText = `❌ Fel, rätt svar var ${r}`;
+      responseText = `❌ Fel! Rätt svar var ${r}`;
       document.getElementById('resp').ariaInvalid = true;
     }
     document.getElementById("p2").innerHTML = responseText;
@@ -223,6 +232,25 @@ function formatCalcString(v1, comp_string, v2) {
 
 function randRange(min_int, max_int) {
   return min_int + getRandomInt(max_int)
+}
+
+function getTimeMs(){
+  return new Date().getTime();
+}
+
+function getTimeBonusReward(duration, reward){
+  bonus = 0
+  if (duration <= 1000) {
+    bonus = reward * 10
+  } else if (duration <= 2000) {
+    bonus = reward * 5
+  } else if (duration <= 3000) {
+    bonus = Math.round(reward * 2.5)
+  } else if (duration <= 4000) {
+    bonus = Math.round(reward * 2)
+  }
+  console.log(`${duration} ms => ${bonus} stars`)
+  return bonus
 }
 
 // Admin

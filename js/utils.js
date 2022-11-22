@@ -105,11 +105,10 @@ function getRandomInt(max) {
 function handleResponseSubmit() {;
     resp = document.getElementById("resp").value;
     correct = resp == r
-    added_score = 0
     if(correct) {
-      added_score = withScoreBooster(10);
-      addScore(added_score);
-      responseText = `✅ Rätt svar Elliot, bra jobbat! ${added_score} ⭐ till dig!`
+      reward = getReward();
+      addScore(reward);
+      responseText = `✅ Rätt svar Elliot, bra jobbat! ${reward} ⭐ till dig!`
       document.getElementById('resp').ariaInvalid = false;
     } else {
       responseText = `❌ Fel, rätt svar var ${r}`;
@@ -153,19 +152,19 @@ function getScoreBooster(){
   return getStoredInt('score_booster_level_v1')
 }
 
+function getReward(){
+  return 10 + getScoreBooster();
+}
+
 function incrementScoreBooster(levels=1){
   return incStoredInt('score_booster_level_v1', levels)
 }
 
-function withScoreBooster(score){
-  return score + getScoreBooster();
-}
-
 function updatePerformance(){
-  level = getScoreBooster()
-  score = getScore()
-  document.getElementById("score").innerHTML = `${score} ⭐`
-  document.getElementById("level").innerHTML = `${level} ✨`
+  reward = getReward();
+  score = getScore();
+  document.getElementById("score").innerHTML = `${score} ⭐`;
+  document.getElementById("reward").innerHTML = `${reward} ✨`;
   progress = document.getElementById("scoreProgress")
   progress.value = score;
   progress.max = getScoreBoosterPrice()
@@ -238,8 +237,7 @@ function adminAddScoreBooster(levels){
 }
 
 function adminSimulateCorrectResponse(){
-  added_score = 10 + getScoreBooster();
-  addScore(added_score);
+  addScore(getReward());
   updatePerformance();
 }
 

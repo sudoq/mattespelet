@@ -240,14 +240,16 @@ function getTimeMs(){
 
 function getTimeBonusReward(duration, reward){
   bonus = 0
-  if (duration <= 1000) {
+  if (duration <= 2000) {
     bonus = reward * 10
-  } else if (duration <= 2000) {
-    bonus = reward * 5
-  } else if (duration <= 3000) {
-    bonus = Math.round(reward * 2.5)
   } else if (duration <= 4000) {
+    bonus = reward * 5
+  } else if (duration <= 6000) {
+    bonus = Math.round(reward * 3)
+  } else if (duration <= 8000) {
     bonus = Math.round(reward * 2)
+  } else if (duration <= 10000) {
+    bonus = Math.round(reward * 1)
   }
   console.log(`${duration} ms => ${bonus} stars`)
   return bonus

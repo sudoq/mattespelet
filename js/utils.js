@@ -158,26 +158,17 @@ function incrementScoreBooster(levels=1){
 }
 
 function withScoreBooster(score){
-  factor = getScoreBoosterFactor()
-  return Math.floor(score * factor)
-}
-
-function getScoreBoosterFactor(){
-  level = getScoreBooster();
-  factor = 1 + (level * 0.1);
-  return factor;
+  return score + getScoreBooster();
 }
 
 function updatePerformance(){
-  factor = getScoreBoosterFactor()
-  perc = Math.round((factor - 1)*100)
   level = getScoreBooster()
   score = getScore()
-  text = `${score} ⭐ (Nivå: ${level}, +${perc}%)`
-  document.getElementById("score").innerHTML = text
+  document.getElementById("score").innerHTML = `${score} ⭐`
+  document.getElementById("level").innerHTML = `${level} ✨`
   progress = document.getElementById("scoreProgress")
   progress.value = score;
-  progress.max = Math.floor(getScoreBoosterPrice())
+  progress.max = getScoreBoosterPrice()
 }
 
 function getParams(){
@@ -211,7 +202,7 @@ function updateTemplateHeader(header){
 function getScoreBoosterPrice(){
   level = getScoreBooster();
   base = 100
-  return Math.floor(base * Math.pow(1.15, level));
+  return Math.round(base * Math.pow(1.15, level));
 }
 
 function buyScoreBooster(){
@@ -247,7 +238,7 @@ function adminAddScoreBooster(levels){
 }
 
 function adminSimulateCorrectResponse(){
-  added_score = withScoreBooster(10);
+  added_score = 10 + getScoreBooster();
   addScore(added_score);
   updatePerformance();
 }

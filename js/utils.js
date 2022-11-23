@@ -276,7 +276,7 @@ function addMinionSize(amount){
 }
 
 function getMinionFeedPrice(){
-  return 100;
+  return 100*getMinionSize();
 }
 
 function updateMinion(){
@@ -284,10 +284,14 @@ function updateMinion(){
   document.getElementById("minion").style.fontSize = `${fontSize}px`
   canNotFeed = !canFeed();
   document.getElementById("feedMinionButton").disabled = canNotFeed;
+  price = getMinionFeedPrice();
+  document.getElementById("feedMinionButton").innerHTML = `Mata bajset - ${price} ⭐`
 }
 
 function canFeed(){
-  return getScore() >= getMinionFeedPrice()
+  afford = getScore() >= getMinionFeedPrice()
+  maxSizeNotReached = getMinionSize() < 20;
+  return afford && maxSizeNotReached
 }
 
 function minionIncreaseSize(amount){

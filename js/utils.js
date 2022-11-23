@@ -133,10 +133,10 @@ function handleResponseSubmit() {;
     return false;
 }
 
-function getStoredInt(name){
+function getStoredInt(name, default_value=0){
     value = parseInt(window.localStorage.getItem(name));
     if(!value){
-      value = 0
+      value = default_value;
       window.localStorage.setItem(name, value)
     }
     return value;
@@ -264,20 +264,30 @@ function getTimeBonusReward(duration, reward){
 // Minion
 function pageControllerMinion(){
   updatePerformance();
-  updateMinionSize();
+  updateMinion();
 }
 
 function getMinionSize(){
-    return getStoredInt('minion_size_v1')
+    return getStoredInt('minion_size_v1', 1)
 }
 
 function addMinionSize(amount){
   return incStoredInt('minion_size_v1', amount)
 }
 
-function updateMinionSize(){
-  size = getMinionSize()
-  document.getElementById("minion").style.fontSize = `${size}px`
+function getMinionFeedPrice(){
+  return 100;
+}
+
+function updateMinion(){
+  fontSize = getMinionSize() * 10;
+  document.getElementById("minion").style.fontSize = `${fontSize}px`
+  canNotFeed = !canFeed();
+  document.getElementById("feedMinionButton").disabled = canNotFeed;
+}
+
+function canFeed(){
+  return getScore() >= getMinionFeedPrice()
 }
 
 function minionIncreaseSize(amount){
@@ -286,7 +296,18 @@ function minionIncreaseSize(amount){
     return;
   }
   addMinionSize(amount);
-  updateMinionSize();
+  updateMinion();
+}
+
+function minionFeed(){
+  if (!canFeed()){
+    return
+  }
+  price = getMinionFeedPrice()
+  addScore(-1*getMinionFeedPrice());
+  addMinionSize(1);
+  updateMinion();
+  updatePerformance();
 }
 
 // Admin

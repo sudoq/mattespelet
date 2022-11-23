@@ -173,10 +173,15 @@ function updatePerformance(){
   reward = getReward();
   score = getScore();
   document.getElementById("score").innerHTML = `${score} ⭐`;
-  document.getElementById("reward").innerHTML = `${reward} ✨`;
+  rewardElement = document.getElementById("reward");
+  if(rewardElement){
+    rewardElement.innerHTML = `${reward} ✨`;
+  }
   progress = document.getElementById("scoreProgress")
-  progress.value = score;
-  progress.max = getScoreBoosterPrice()
+  if(progress) {
+    progress.value = score;
+    progress.max = getScoreBoosterPrice()
+  }
 }
 
 function getParams(){
@@ -253,6 +258,35 @@ function getTimeBonusReward(duration, reward){
   }
   console.log(`${duration} ms => ${bonus} stars`)
   return bonus
+}
+
+
+// Minion
+function pageControllerMinion(){
+  updatePerformance();
+  updateMinionSize();
+}
+
+function getMinionSize(){
+    return getStoredInt('minion_size_v1')
+}
+
+function addMinionSize(amount){
+  return incStoredInt('minion_size_v1', amount)
+}
+
+function updateMinionSize(){
+  size = getMinionSize()
+  document.getElementById("minion").style.fontSize = `${size}px`
+}
+
+function minionIncreaseSize(amount){
+  size = getMinionSize()
+  if((size + amount) <= 0){
+    return;
+  }
+  addMinionSize(amount);
+  updateMinionSize();
 }
 
 // Admin

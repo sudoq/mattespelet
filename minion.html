@@ -11,25 +11,19 @@
 </head>
 <body>
   <main class="container">
-    <h1>Admin ⚙️</h1>
+    <h1>Minion</h1>
     <nav>
     <h2 id="score"></h2>
-    <h2 id="reward"></h2>
     </nav>
-    <progress id="scoreProgress" value="1" max="1"></progress>
     <form action="./index.html">
       <input type="submit" value="Tillbaka">
     </form>
-    <button onclick="adminSimulateCorrectResponse();">Rätt svar</button>
-    <button onclick="adminAddScore(10);">+10 ⭐</button>
-    <button onclick="adminAddScore(100);">+100 ⭐</button>
-    <button onclick="adminAddScore(1000);">+1000 ⭐</button>
-    <button onclick="adminAddScoreBooster(1);">+1 ✨</button>
-    <button onclick="adminAddScoreBooster(10);">+10 ✨</button>
-    <button onclick="adminReset();">Återställ</button>
+    <button onclick="minionIncreaseSize(10)">Öka storlek</button>
+    <button onclick="minionIncreaseSize(-10)">Minska storlek</button>
+    <center><p id="minion" style="font-size:1px">💩</p></center>
   </main>
   <script>
-    pageControllerAdmin();
+    pageControllerMinion();
   </script>
 </body>
 </html>

@@ -268,7 +268,7 @@ function pageControllerMinion(){
 }
 
 function getMinionSize(){
-    return getStoredInt('minion_size_v1', 1)
+    return getStoredInt('minion_size_v1', 1);
 }
 
 function addMinionSize(amount){
@@ -276,21 +276,31 @@ function addMinionSize(amount){
 }
 
 function getMinionFeedPrice(){
-  return 100*getMinionSize();
+  return 20*getMinionSize();
 }
 
 function updateMinion(){
-  fontSize = getMinionSize() * 10;
-  document.getElementById("minion").style.fontSize = `${fontSize}px`
+  minionSize = getMinionSize();
   canNotFeed = !canFeed();
-  document.getElementById("feedMinionButton").disabled = canNotFeed;
   price = getMinionFeedPrice();
+  numberOfMinions = Math.floor(minionSize / 5);
+  console.log(numberOfMinions);
+
+  for(let i=0; i<9; i++){
+    elementId = `minionGrid${i}`
+    subminionSize = Math.max(Math.min((minionSize - i*5), 5), 0);
+    fontSize = subminionSize * 10;
+    console.log(`${elementId}: Size: ${subminionSize}`);
+    document.getElementById(elementId).style.fontSize = `${fontSize}px`
+  }
+  //document.getElementById("minionGrid0").style.fontSize = `${fontSize}px`
+  document.getElementById("feedMinionButton").disabled = canNotFeed;
   document.getElementById("feedMinionButton").innerHTML = `Mata bajset - ${price} ⭐`
 }
 
 function canFeed(){
   afford = getScore() >= getMinionFeedPrice()
-  maxSizeNotReached = getMinionSize() < 20;
+  maxSizeNotReached = getMinionSize() < 5*9;
   return afford && maxSizeNotReached
 }
 

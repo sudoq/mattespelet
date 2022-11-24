@@ -6,22 +6,50 @@
   <meta name="robots" content="noindex">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://unpkg.com/@picocss/pico@latest/css/pico.min.css">
-  <script src="js/utils_ccc5c5e7a4029e770f11445d93c6c9da.js"></script>
+  <script src="js/utils_989d8945c26cf7c053a5576ac2705021.js"></script>
   <title></title>
-</head>
+  <style>
+  .grid-container {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    #background-color: #2196F3;
+    padding: 10px;
+  }
+  .grid-item {
+    #background-color: rgba(255, 255, 255, 0.8);
+    #border: 1px solid rgba(0, 0, 0, 0.8);
+    padding: 20px;
+    font-size: 1px;
+    text-align: center;
+  }
+  </style>
+  </head>
 <body>
   <main class="container">
-    <h1>Minion</h1>
+    <h1>Toaletten 🚽</h1>
     <nav>
     <h2 id="score"></h2>
     </nav>
     <form action="./index.html">
       <input type="submit" value="Tillbaka">
     </form>
-    <button id="feedMinionButton" onclick="minionFeed()">Mata bajset - 100 ⭐</button>
+    <button id="feedMinionButton" onclick="minionFeed()">ph</button>
+    <!--
     <button onclick="minionIncreaseSize(1)">Öka storlek</button>
     <button onclick="minionIncreaseSize(-1)">Minska storlek</button>
+    -->
     <center><p id="minion" style="font-size:1px">💩</p></center>
+    <div class="grid-container">
+      <div class="grid-item" id="minionGrid0">💩</div>
+      <div class="grid-item" id="minionGrid1">💩</div>
+      <div class="grid-item" id="minionGrid2">💩</div>
+      <div class="grid-item" id="minionGrid3">💩</div>
+      <div class="grid-item" id="minionGrid4">💩</div>
+      <div class="grid-item" id="minionGrid5">💩</div>
+      <div class="grid-item" id="minionGrid6">💩</div>
+      <div class="grid-item" id="minionGrid7">💩</div>
+      <div class="grid-item" id="minionGrid8">💩</div>
+    </div>
   </main>
   <script>
     pageControllerMinion();

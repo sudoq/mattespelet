@@ -82,7 +82,7 @@ function updateScoreBoosterText(){
   level = getScoreBooster();
   next_level = level + 1
   price = getScoreBoosterPrice();
-  text = `✨ Stjärnförstärkare (Nivå ${next_level}), pris: ${price} ⭐`
+  text = `💖 Hjärtförstärkare (Nivå ${next_level}), pris: ${price} ❤️`
   button = document.getElementById("buyScoreBoosterButton")
   button.innerHTML = text
   if(getScore() < price){
@@ -117,7 +117,7 @@ function handleResponseSubmit() {;
       if (bonus) {
         bonus_text = ` + ${bonus} (tidsbonus) = ${total}`
       }
-      responseText = `✅ Rätt! Du har vunnit ${reward}${bonus_text} ⭐`
+      responseText = `✅ Rätt! Du har vunnit ${reward}${bonus_text} ❤️`
       document.getElementById('resp').ariaInvalid = false;
     } else {
       responseText = `❌ Fel! Rätt svar var ${r}`;
@@ -144,9 +144,13 @@ function getStoredInt(name, default_value=0){
 
 function incStoredInt(name, value){
   current_value = getStoredInt(name);
-  new_value = current_value + value;
+  new_value = Math.max(current_value + value, 0);
   window.localStorage.setItem(name, new_value);
   return new_value;
+}
+
+function setStoredInt(name, value){
+  window.localStorage.setItem(name, value);
 }
 
 function getScore(){
@@ -172,10 +176,10 @@ function incrementScoreBooster(levels=1){
 function updatePerformance(){
   reward = getReward();
   score = getScore();
-  document.getElementById("score").innerHTML = `${score} ⭐`;
+  document.getElementById("score").innerHTML = `${score} ❤️`;
   rewardElement = document.getElementById("reward");
   if(rewardElement){
-    rewardElement.innerHTML = `${reward} ✨`;
+    rewardElement.innerHTML = `${reward} 💖`;
   }
   progress = document.getElementById("scoreProgress")
   if(progress) {
@@ -275,8 +279,31 @@ function addMinionSize(amount){
   return incStoredInt('minion_size_v1', amount)
 }
 
+function setMinionSize(value){
+  if(value < 1){
+    value = 1;
+  }
+  return setStoredInt('minion_size_v1', value)
+}
+
+function getMinionUpdatedAt(){
+  return getStoredInt('minion_updated_at_v1', getTimeMs());
+}
+
+function setUpdatedAt(value){
+  return setStoredInt('minion_updated_at_v1', value);
+}
+
 function getMinionFeedPrice(){
   return 20*getMinionSize();
+}
+
+function getMinionHungerPeriod(){
+  return getStoredInt('minion_hunger_period_v1', 86400);
+}
+
+function setMinionHungerPeriod(value){
+  return setStoredInt('minion_hunger_period_v1', value);
 }
 
 function updateMinion(){
@@ -284,18 +311,27 @@ function updateMinion(){
   canNotFeed = !canFeed();
   price = getMinionFeedPrice();
   numberOfMinions = Math.floor(minionSize / 5);
-  console.log(numberOfMinions);
-
+  checkMinionHunger(); 
   for(let i=0; i<9; i++){
     elementId = `minionGrid${i}`
     subminionSize = Math.max(Math.min((minionSize - i*5), 5), 0);
     fontSize = subminionSize * 10;
-    console.log(`${elementId}: Size: ${subminionSize}`);
     document.getElementById(elementId).style.fontSize = `${fontSize}px`
   }
-  //document.getElementById("minionGrid0").style.fontSize = `${fontSize}px`
   document.getElementById("feedMinionButton").disabled = canNotFeed;
-  document.getElementById("feedMinionButton").innerHTML = `Mata bajset - ${price} ⭐`
+  document.getElementById("feedMinionButton").innerHTML = `Mata - ${price} ❤️`
+}
+
+function checkMinionHunger(){
+  updatedAt = getMinionUpdatedAt();
+  period_seconds = getMinionHungerPeriod();
+  diff_seconds = Math.round((getTimeMs() - updatedAt)/1000);
+  if(diff_seconds > period_seconds) {
+    numberOfPeriods = Math.floor(diff_seconds / period_seconds);
+    setUpdatedAt(getTimeMs());
+    minionIncreaseSize(-1*numberOfPeriods);
+  }
+  console.log(`Updated at: ${updatedAt}, Diff: ${diff_seconds} seconds`);
 }
 
 function canFeed(){
@@ -307,9 +343,10 @@ function canFeed(){
 function minionIncreaseSize(amount){
   size = getMinionSize()
   if((size + amount) <= 0){
-    return;
+    setMinionSize(1);
+  } else {
+    addMinionSize(amount);
   }
-  addMinionSize(amount);
   updateMinion();
 }
 
@@ -320,6 +357,7 @@ function minionFeed(){
   price = getMinionFeedPrice()
   addScore(-1*getMinionFeedPrice());
   addMinionSize(1);
+  setUpdatedAt(getTimeMs());
   updateMinion();
   updatePerformance();
 }
@@ -343,4 +381,8 @@ function adminSimulateCorrectResponse(){
 function adminReset(){
   window.localStorage.clear();
   updatePerformance();
+}
+
+function adminSetMinionHungerPeriod(value){
+  setMinionHungerPeriod(value);
 }

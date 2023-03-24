@@ -1,3 +1,9 @@
+//const CURRENCY = "❤️"
+//const CURRENCY_POW = "💖"
+const CURRENCY = "⭐"
+const CURRENCY_POW = "🌟"
+
+
 // Page Controllers
 function pageControllerBasicProblemTemplate(){
   templateId = getTemplateId();
@@ -9,7 +15,7 @@ function pageControllerBasicProblemTemplate(){
 function pageControllerAdd(){
   updatePerformance();
   min_num = 1
-  max_num = 20
+  max_num = 50
 
   v1 = randRange(min_num, max_num)
   v2 = randRange(min_num, max_num)
@@ -21,7 +27,7 @@ function pageControllerAdd(){
 function pageControllerSub(){
   updatePerformance();
   min_num = 1
-  max_num = 20
+  max_num = 50
 
   pv1 = randRange(min_num, max_num)
   pv2 = randRange(min_num, max_num)
@@ -40,7 +46,7 @@ function pageControllerSub(){
 
 function pageControllerMul(){
   updatePerformance();
-  v1 = randRange(0, 6)
+  v1 = randRange(0, 10)
   v2 = randRange(1, 10)
 
   r = v1 * v2;
@@ -50,7 +56,7 @@ function pageControllerMul(){
 function pageControllerDiv(){
   updatePerformance();
   r = randRange(0, 5)
-  v2 = randRange(1, 5)
+  v2 = randRange(1, 10)
 
   t = r * v2;
   return formatCalcString(t, "/", v2)
@@ -82,7 +88,7 @@ function updateScoreBoosterText(){
   level = getScoreBooster();
   next_level = level + 1
   price = getScoreBoosterPrice();
-  text = `💖 Hjärtförstärkare (Nivå ${next_level}), pris: ${price} ❤️`
+  text = `${CURRENCY_POW} Hjärtförstärkare (Nivå ${next_level}), pris: ${price} ${CURRENCY}`
   button = document.getElementById("buyScoreBoosterButton")
   button.innerHTML = text
   if(getScore() < price){
@@ -117,10 +123,12 @@ function handleResponseSubmit() {;
       if (bonus) {
         bonus_text = ` + ${bonus} (tidsbonus) = ${total}`
       }
-      responseText = `✅ Rätt! Du har vunnit ${reward}${bonus_text} ❤️`
+      responseText = `✅ Rätt! Du har vunnit ${reward}${bonus_text} ${CURRENCY}`
       document.getElementById('resp').ariaInvalid = false;
     } else {
-      responseText = `❌ Fel! Rätt svar var ${r}`;
+      penalty = getReward();
+      addScore(-1 * penalty);
+      responseText = `❌ Fel! Rätt svar var ${r}. Du förlorade ${penalty} ${CURRENCY}`;
       document.getElementById('resp').ariaInvalid = true;
     }
     document.getElementById("p2").innerHTML = responseText;
@@ -176,10 +184,10 @@ function incrementScoreBooster(levels=1){
 function updatePerformance(){
   reward = getReward();
   score = getScore();
-  document.getElementById("score").innerHTML = `${score} ❤️`;
+  document.getElementById("score").innerHTML = `${score} ${CURRENCY}`;
   rewardElement = document.getElementById("reward");
   if(rewardElement){
-    rewardElement.innerHTML = `${reward} 💖`;
+    rewardElement.innerHTML = `${reward} ${CURRENCY_POW}`;
   }
   progress = document.getElementById("scoreProgress")
   if(progress) {
@@ -311,7 +319,7 @@ function updateMinion(){
   canNotFeed = !canFeed();
   price = getMinionFeedPrice();
   numberOfMinions = Math.floor(minionSize / 5);
-  checkMinionHunger(); 
+  checkMinionHunger();
   for(let i=0; i<9; i++){
     elementId = `minionGrid${i}`
     subminionSize = Math.max(Math.min((minionSize - i*5), 5), 0);
@@ -319,7 +327,7 @@ function updateMinion(){
     document.getElementById(elementId).style.fontSize = `${fontSize}px`
   }
   document.getElementById("feedMinionButton").disabled = canNotFeed;
-  document.getElementById("feedMinionButton").innerHTML = `Mata - ${price} ❤️`
+  document.getElementById("feedMinionButton").innerHTML = `Mata - ${price} ${CURRENCY}`
 }
 
 function checkMinionHunger(){
